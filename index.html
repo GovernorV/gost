@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Расчет предельной нагрузки на гофроящик по ГОСТ 9142-90</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Программа для расчета предельной нагрузки на гофроящик и характеристик гофрокартона по ГОСТ 9142-90: сопротивление сжатию, продавливанию, разрыву по линии рилевки, подбор марки картона и PDF-отчет.">
+<meta name="keywords" content="ГОСТ 9142-90, расчет нагрузки на гофроящик, предельная нагрузка, гофрокартон, сопротивление сжатию, марка гофрокартона, PDF отчет">
+<meta name="author" content="Viktor Guberniev">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://governorv.github.io/gost/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PackTuning Software">
+<meta property="og:title" content="Расчет предельной нагрузки на гофроящик по ГОСТ 9142-90">
+<meta property="og:description" content="Windows-программа для точного расчета характеристик гофроящика по ГОСТ 9142-90 с формированием PDF-отчета.">
+<meta property="og:url" content="https://governorv.github.io/gost/">
+<meta property="og:image" content="https://governorv.github.io/gost/gost914290_top_banner.jpg">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GOST 9142-90 Box Load Calculator">
+<meta name="twitter:description" content="Corrugated box load and board grade calculation according to GOST 9142-90 with PDF report export.">
+<meta name="twitter:image" content="https://governorv.github.io/gost/gost914290_top_banner.jpg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "GOST 9142-90 Box Load Calculator",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Windows",
+  "url": "https://governorv.github.io/gost/",
+  "image": "https://governorv.github.io/gost/gost914290_top_banner.jpg",
+  "description": "Software for calculating corrugated box load limits and board characteristics according to GOST 9142-90 with PDF report export.",
+  "author": {
+    "@type": "Person",
+    "name": "Viktor Guberniev"
+  },
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>
+<style>
+:root{
+  --bg:#071021;
+  --card:#101a31;
+  --line:rgba(125,190,255,.22);
+  --text:#edf5ff;
+  --muted:#b9c8de;
+  --accent:#33b7ff;
+  --accent2:#79ffd2;
+  --warn:#ffd36a;
+  --radius:18px;
+}
+html.day-theme{
+  --bg:#f7fbff;
+  --card:#ffffff;
+  --line:#d7e4f2;
+  --text:#102040;
+  --muted:#52657e;
+  --accent:#0d56c7;
+  --accent2:#1aa9ff;
+  --warn:#b37b18;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 80% 0%, rgba(51,183,255,.18), transparent 32rem),
+    radial-gradient(circle at 12% 12%, rgba(121,255,210,.12), transparent 28rem),
+    var(--bg);
+  color:var(--text);
+  line-height:1.55;
+}
+.container{max-width:1200px;margin:auto;padding:0 20px}
+section{padding:52px 0}
+h1,h2,h3{margin:0 0 12px}
+p{margin:0 0 12px;color:var(--muted)}
+ul{margin:0 0 12px 18px;color:var(--muted)}
+b{color:var(--text)}
+a{color:inherit}
+img{width:100%;display:block;border-radius:16px}
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:28px;
+  box-shadow:0 22px 65px rgba(0,0,0,.18);
+}
+html.day-theme .card{
+  background:#ffffff;
+  box-shadow:0 20px 60px rgba(24,45,76,.1);
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:900px){.grid2,.grid3{grid-template-columns:1fr}}
+.btn{
+  display:inline-block;
+  padding:12px 18px;
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:800;
+  margin:6px 6px 0 0;
+}
+.btn.primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#061226;
+}
+.btn.secondary{
+  border:1px solid var(--line);
+  color:var(--text);
+}
+html.day-theme .btn.secondary{background:#fff}
+.badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  margin:6px 6px 0 0;
+  font-size:12px;
+  color:var(--muted);
+}
+.warn{
+  background:rgba(255,211,106,.12);
+  border:1px solid rgba(255,211,106,.32);
+  padding:18px;
+  border-radius:14px;
+}
+.small{font-size:13px;color:var(--muted)}
+hr.sep{border:none;border-top:1px solid var(--line);margin:18px 0}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:999;
+  background:rgba(7,16,33,.82);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+html.day-theme .topbar{
+  background:rgba(247,251,255,.92);
+  box-shadow:0 10px 30px rgba(24,45,76,.06);
+}
+.topbar .inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:12px 0;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+}
+.logo{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  box-shadow:0 18px 50px rgba(51,183,255,.18);
+}
+.brand .name{display:flex;flex-direction:column;line-height:1.1}
+.brand .name strong{font-size:14px}
+.brand .name span{font-size:12px;color:var(--muted)}
+.lang{display:flex;gap:8px;align-items:center}
+.lang button{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  color:var(--text);
+  border-radius:12px;
+  padding:8px 10px;
+  font-weight:800;
+  cursor:pointer;
+}
+html.day-theme .lang button{background:#fff}
+.lang button.active{
+  border-color:transparent;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#061226;
+}
+.top-banner{
+  height:clamp(130px,18vw,230px);
+  overflow:hidden;
+  border-bottom:1px solid var(--line);
+  background:#030914;
+}
+.top-banner img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  border-radius:0;
+}
+.hidden{display:none !important}
+.fullshot{
+  border-radius:20px;
+  border:1px solid var(--line);
+  background:#020713;
+  padding:14px;
+}
+.feature-list p{margin-bottom:10px}
+.metric{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+@media(max-width:640px){.metric{grid-template-columns:1fr}}
+.metric div{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px;
+  background:rgba(255,255,255,.035);
+}
+html.day-theme .metric div{background:#f8fbff}
+.other-products .cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-top:18px;
+}
+.other-card{padding:0;overflow:hidden}
+.other-card img{border-radius:0;aspect-ratio:4/3;object-fit:cover}
+.other-card .body{padding:18px}
+.other-card h3{font-size:18px}
+@media(max-width:900px){.other-products .cards{grid-template-columns:1fr}}
+footer{
+  border-top:1px solid var(--line);
+  padding:32px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="container">
+    <div class="inner">
+      <a class="brand" href="#top" aria-label="GOST 9142-90">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="name">
+          <strong>ГОСТ 9142-90</strong>
+          <span id="tagline">Расчет нагрузки на гофроящик</span>
+        </div>
+      </a>
+      <div class="lang" aria-label="Language switcher">
+        <button id="btn-ru" type="button">RU</button>
+        <button id="btn-en" type="button">EN</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-banner" aria-label="Расчет предельной нагрузки на гофроящик по ГОСТ 9142-90">
+  <img src="gost914290_top_banner.jpg" alt="Расчет предельной нагрузки на гофроящик по ГОСТ 9142-90">
+</div>
+
+<main id="top" data-lang="ru">
+  <section>
+    <div class="container grid2">
+      <div class="card">
+        <h1>Расчет предельной нагрузки на гофроящик по ГОСТ 9142-90</h1>
+        <p>
+          Программа помогает быстро определить характеристики гофроящика:
+          усилие сопротивления сжатию, допустимую массу груза при штабелировании,
+          сопротивление торцевому сжатию, продавливанию и разрыву по линии рилевки.
+        </p>
+        <p>
+          Результат сразу превращается в аккуратный PDF-отчет с исходными данными,
+          расчетными показателями и фирменным баннером программы.
+        </p>
+        <a class="btn secondary" href="#ru-work">Как работает</a>
+        <a class="btn secondary" href="#ru-results">Результаты</a>
+        <a class="btn primary" href="https://disk.yandex.ru/d/tXD_qns5EMt-0A" target="_blank" rel="noopener">Скачать демоверсию</a>
+        <a class="btn secondary" href="#ru-report">PDF-отчет</a>
+        <div>
+          <span class="badge">Windows</span>
+          <span class="badge">ГОСТ 9142-90</span>
+          <span class="badge">Гофрокартон</span>
+          <span class="badge">PDF-отчет</span>
+        </div>
+      </div>
+      <div class="card feature-list">
+        <h3>Для кого</h3>
+        <p>✔ технологи и конструкторы гофроупаковки</p>
+        <p>✔ отделы качества и производственные лаборатории</p>
+        <p>✔ менеджеры, которым нужно быстро подтвердить параметры ящика</p>
+        <p>✔ предприятия, где важны стабильность штабеля и отсутствие рекламаций</p>
+        <div class="warn">
+          <b>Практический смысл:</b> меньше расчетов вручную, меньше ошибок в документах,
+          быстрее согласование конструкции и марки гофрокартона.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ru-work">
+    <div class="container">
+      <h2>Как это выглядит в программе</h2>
+      <p>
+        Вводятся внутренние размеры ящика, тип гофрокартона, срок хранения, масса нетто
+        и количество ящиков в штабеле. После расчета программа выводит все ключевые показатели.
+      </p>
+      <div class="fullshot">
+        <img src="gost914290_screen.jpg" alt="Интерфейс программы расчета по ГОСТ 9142-90">
+      </div>
+    </div>
+  </section>
+
+  <section id="ru-results">
+    <div class="container">
+      <h2>Какие данные рассчитываются</h2>
+      <div class="grid3">
+        <div class="card">
+          <h3>Нагрузка и штабелирование</h3>
+          <p>
+            Расчет показывает усилие сопротивления сжатию ящика и массу груза,
+            которую ящик может выдерживать при штабелировании.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Характеристики картона</h3>
+          <p>
+            Определяются сопротивление торцевому сжатию вдоль гофра,
+            сопротивление продавливанию и сопротивление разрыву по линии рилевки.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Марка гофрокартона</h3>
+          <p>
+            По введенным условиям программа подбирает рекомендуемую марку
+            трехслойного или пятислойного гофрокартона.
+          </p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <h3>Исходные данные</h3>
+        <div class="metric">
+          <div><b>Размеры ящика</b><br><span class="small">длина, ширина, высота в миллиметрах</span></div>
+          <div><b>Тип гофрокартона</b><br><span class="small">трехслойный или пятислойный</span></div>
+          <div><b>Срок хранения</b><br><span class="small">до 30 дней, 31-100 дней или не оговорен</span></div>
+          <div><b>Условия штабеля</b><br><span class="small">масса нетто и число ящиков в штабеле</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ru-report">
+    <div class="container grid2">
+      <div>
+        <h2>PDF-отчет без ручного оформления</h2>
+        <p>
+          Отчет формируется сразу после расчета и автоматически открывается после сохранения.
+          В документ попадают исходные данные, дата формирования, все расчетные результаты
+          и верхний баннер программы.
+        </p>
+        <ul>
+          <li>одна страница с понятной структурой;</li>
+          <li>исходные данные и расчетные значения в одном документе;</li>
+          <li>удобно приложить к технологической карте, письму или внутреннему согласованию.</li>
+        </ul>
+      </div>
+      <div class="fullshot">
+        <img src="gost914290_report.jpg" alt="Пример PDF-отчета по ГОСТ 9142-90">
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Инженерная логика расчета</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>Точность и повторяемость</h3>
+          <p>
+            Программа убирает зависимость от ручных пересчетов и разных Excel-файлов:
+            одинаковые входные данные дают одинаковый результат и единый формат отчета.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Быстрое сравнение вариантов</h3>
+          <p>
+            Можно менять размеры, массу, тип картона, срок хранения и количество ящиков в штабеле,
+            сразу видя, как меняется требуемая марка и расчетные сопротивления.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="ru-price">
+    <div class="container grid2">
+      <div class="card">
+        <h2>Покупка программы</h2>
+        <h3>10 000 ₽</h3>
+        <p>Постоянная лицензия для рабочего места Windows.</p>
+      </div>
+      <div class="card">
+        <h2>Аренда</h2>
+        <h3>2 000 ₽ за 1 год</h3>
+        <p>Удобно для временного использования, проверки расчетов и разовых проектов.</p>
+      </div>
+    </div>
+  </section>
+  <section class="other-products">
+    <div class="container">
+      <h2>Познакомьтесь также с другими моими программами</h2>
+      <div class="cards">
+        <article class="card other-card">
+          <a href="https://governorv.github.io/BoxPalletizer/#ru" target="_blank" rel="noopener"><img src="palletizer_banner.png" alt="Паллетировщик Box Palletizer"></a>
+          <div class="body">
+            <h3>Box Palletizer</h3>
+            <p>Расчет укладки коробов на поддон, 3D-визуализация, нагрузка и отчеты.</p>
+            <a class="btn secondary" href="https://governorv.github.io/BoxPalletizer/#ru" target="_blank" rel="noopener">Страница</a>
+          </div>
+        </article>
+        <article class="card other-card">
+          <a href="https://governorv.github.io/BoxPriceCalculator/#ru" target="_blank" rel="noopener"><img src="boxprice_banner.png" alt="Калькулятор стоимости гофроящика"></a>
+          <div class="body">
+            <h3>Box Price Calculator</h3>
+            <p>Себестоимость гофроящиков, листов и рулонов, техкарты и PDF-отчеты.</p>
+            <a class="btn secondary" href="https://governorv.github.io/BoxPriceCalculator/#ru" target="_blank" rel="noopener">Страница</a>
+          </div>
+        </article>
+        <article class="card other-card">
+          <a href="https://governorv.github.io/OptCutting/" target="_blank" rel="noopener"><img src="optcutting_banner.png" alt="Раскройщик OptCutting"></a>
+          <div class="body">
+            <h3>OptCutting</h3>
+            <p>Оптимизация раскроя полотна гофрокартона, карты раскроя и сетевой график.</p>
+            <a class="btn secondary" href="https://governorv.github.io/OptCutting/" target="_blank" rel="noopener">Страница</a>
+          </div>
+        </article>
+        <article class="card other-card">
+          <a href="https://governorv.github.io/DBSearch/#ru" target="_blank" rel="noopener"><img src="dbsearch_banner.png" alt="DBSearch"></a>
+          <div class="body">
+            <h3>DBSearch</h3>
+            <p>Поиск объектов и данных в SQL Server, фильтры, анализ и экспорт результатов.</p>
+            <a class="btn secondary" href="https://governorv.github.io/DBSearch/#ru" target="_blank" rel="noopener">Страница</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main data-lang="en" class="hidden">
+  <section>
+    <div class="container grid2">
+      <div class="card">
+        <h1>Corrugated box load calculation according to GOST 9142-90</h1>
+        <p>
+          The program calculates corrugated box strength characteristics:
+          compression resistance, allowable stacking load, edge crush resistance,
+          bursting resistance, crease-line tear resistance and recommended board grade.
+        </p>
+        <p>
+          Results are exported to a clean PDF report with input data, calculated values
+          and the application banner at the top.
+        </p>
+        <a class="btn secondary" href="#en-work">Workflow</a>
+        <a class="btn secondary" href="#en-results">Results</a>
+        <a class="btn primary" href="https://disk.yandex.ru/d/tXD_qns5EMt-0A" target="_blank" rel="noopener">Download demo</a>
+        <a class="btn secondary" href="#en-report">PDF report</a>
+        <div>
+          <span class="badge">Windows</span>
+          <span class="badge">GOST 9142-90</span>
+          <span class="badge">Corrugated board</span>
+          <span class="badge">PDF report</span>
+        </div>
+      </div>
+      <div class="card feature-list">
+        <h3>Best suited for</h3>
+        <p>✔ packaging engineers and technologists</p>
+        <p>✔ quality departments and production laboratories</p>
+        <p>✔ teams that need quick box parameter validation</p>
+        <p>✔ manufacturers focused on stable stacking and fewer claims</p>
+        <div class="warn">
+          <b>Practical value:</b> fewer manual calculations, fewer document errors,
+          faster approval of box structure and board grade.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="en-work">
+    <div class="container">
+      <h2>How it looks in the program</h2>
+      <p>
+        Enter internal box dimensions, board type, storage period, net mass and number of boxes
+        in the stack. The program then displays all key calculation results.
+      </p>
+      <div class="fullshot">
+        <img src="gost914290_screen.jpg" alt="GOST 9142-90 calculator interface">
+      </div>
+    </div>
+  </section>
+
+  <section id="en-results">
+    <div class="container">
+      <h2>Calculated data</h2>
+      <div class="grid3">
+        <div class="card">
+          <h3>Load and stacking</h3>
+          <p>
+            The calculation outputs box compression resistance and the load that the box
+            can withstand during stacking.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Board characteristics</h3>
+          <p>
+            It determines edge crush resistance, bursting resistance and
+            crease-line tear resistance.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Board grade</h3>
+          <p>
+            Based on the selected conditions, the program recommends a corrugated board grade
+            for three-layer or five-layer board.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="en-report">
+    <div class="container grid2">
+      <div>
+        <h2>PDF report without manual formatting</h2>
+        <p>
+          The report is generated after calculation and opens automatically after saving.
+          It includes the input values, creation date, all calculation results and the top banner.
+        </p>
+        <ul>
+          <li>clear one-page structure;</li>
+          <li>input data and results in one document;</li>
+          <li>easy to attach to a technical card, email or internal approval note.</li>
+        </ul>
+      </div>
+      <div class="fullshot">
+        <img src="gost914290_report.jpg" alt="GOST 9142-90 PDF report example">
+      </div>
+    </div>
+  </section>
+
+
+  <section id="en-price">
+    <div class="container grid2">
+      <div class="card">
+        <h2>Program purchase</h2>
+        <h3>10,000 RUB</h3>
+        <p>Perpetual license for a Windows workstation.</p>
+      </div>
+      <div class="card">
+        <h2>Rental</h2>
+        <h3>2,000 RUB per year</h3>
+        <p>Useful for temporary use, calculation checks and one-time projects.</p>
+      </div>
+    </div>
+  </section>
+  <section class="other-products">
+    <div class="container">
+      <h2>Explore my other software as well</h2>
+      <div class="cards">
+        <article class="card other-card">
+          <a href="https://governorv.github.io/BoxPalletizer/#en" target="_blank" rel="noopener"><img src="palletizer_banner_en.png" alt="Box Palletizer"></a>
+          <div class="body">
+            <h3>Box Palletizer</h3>
+            <p>Plan box stacking on pallets with 3D visualization, load checks and reports.</p>
+            <a class="btn secondary" href="https://governorv.github.io/BoxPalletizer/#en" target="_blank" rel="noopener">Page</a>
+          </div>
+        </article>
+        <article class="card other-card">
+          <a href="https://governorv.github.io/BoxPriceCalculator/#en" target="_blank" rel="noopener"><img src="boxprice_banner_en.png" alt="Box Price Calculator"></a>
+          <div class="body">
+            <h3>Box Price Calculator</h3>
+            <p>Corrugated packaging cost calculation with tech cards and PDF reports.</p>
+            <a class="btn secondary" href="https://governorv.github.io/BoxPriceCalculator/#en" target="_blank" rel="noopener">Page</a>
+          </div>
+        </article>
+        <article class="card other-card">
+          <a href="https://governorv.github.io/OptCutting/?lang=en" target="_blank" rel="noopener"><img src="optcutting_banner_en.png" alt="OptCutting"></a>
+          <div class="body">
+            <h3>OptCutting</h3>
+            <p>Corrugated board cutting optimization with cutting maps and Gantt schedule.</p>
+            <a class="btn secondary" href="https://governorv.github.io/OptCutting/?lang=en" target="_blank" rel="noopener">Page</a>
+          </div>
+        </article>
+        <article class="card other-card">
+          <a href="https://governorv.github.io/DBSearch/#en" target="_blank" rel="noopener"><img src="dbsearch_banner_en.png" alt="DBSearch"></a>
+          <div class="body">
+            <h3>DBSearch</h3>
+            <p>Search SQL Server objects and data, analyze code, filter and export results.</p>
+            <a class="btn secondary" href="https://governorv.github.io/DBSearch/#en" target="_blank" rel="noopener">Page</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    © GOST 9142-90 Box Load Calculator — PackTuning Software<br>
+    Contact: <a href="mailto:vguberniev@gmail.com">vguberniev@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  const RU = "ru";
+  const EN = "en";
+  const btnRu = document.getElementById("btn-ru");
+  const btnEn = document.getElementById("btn-en");
+  const mains = Array.from(document.querySelectorAll("main[data-lang]"));
+  const tagline = document.getElementById("tagline");
+
+  function applyAutoTheme(){
+    const hour = new Date().getHours();
+    const isDay = hour >= 6 && hour < 18;
+    document.documentElement.classList.toggle("day-theme", isDay);
+    document.documentElement.classList.toggle("night-theme", !isDay);
+  }
+
+  function setMetaForLang(lang){
+    document.documentElement.lang = lang;
+    if (tagline){
+      tagline.textContent = (lang === RU)
+        ? "Расчет нагрузки на гофроящик"
+        : "Corrugated box load calculation";
+    }
+  }
+
+  function showLang(lang){
+    mains.forEach(m => {
+      m.classList.toggle("hidden", m.getAttribute("data-lang") !== lang);
+    });
+    btnRu.classList.toggle("active", lang === RU);
+    btnEn.classList.toggle("active", lang === EN);
+    setMetaForLang(lang);
+    try { localStorage.setItem("lang", lang); } catch(e) {}
+    const h = (window.location.hash || "").toLowerCase();
+    if (h === "#ru" || h === "#en" || h === "") {
+      history.replaceState(null, "", "#" + lang);
+    }
+  }
+
+  function detectInitialLang(){
+    const h = (window.location.hash || "").toLowerCase();
+    if (h === "#en") return EN;
+    if (h === "#ru") return RU;
+    try {
+      const saved = localStorage.getItem("lang");
+      if (saved === EN || saved === RU) return saved;
+    } catch(e) {}
+    return RU;
+  }
+
+  btnRu.addEventListener("click", () => showLang(RU));
+  btnEn.addEventListener("click", () => showLang(EN));
+  window.addEventListener("hashchange", () => {
+    const h = (window.location.hash || "").toLowerCase();
+    if (h === "#en") showLang(EN);
+    if (h === "#ru") showLang(RU);
+  });
+
+  applyAutoTheme();
+  setInterval(applyAutoTheme, 60 * 1000);
+  showLang(detectInitialLang());
+})();
+</script>
+</body>
+</html>
