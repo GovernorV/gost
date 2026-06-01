@@ -217,15 +217,16 @@ html.day-theme .lang button{background:#fff}
 html.day-theme .metric div{background:#f8fbff}
 .other-products .cards{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
-  margin-top:18px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:24px;
+  margin-top:24px;
 }
 .other-card{padding:0;overflow:hidden}
-.other-card img{border-radius:0;aspect-ratio:4/3;object-fit:cover}
-.other-card .body{padding:18px}
-.other-card h3{font-size:18px}
-@media(max-width:900px){.other-products .cards{grid-template-columns:1fr}}
+.other-card img{border-radius:0;aspect-ratio:16/10;object-fit:cover}
+.other-card .body{padding:22px}
+.other-card h3{font-size:20px}
+@media(max-width:1050px){.other-products .cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.other-products .cards{grid-template-columns:1fr}}
 footer{
   border-top:1px solid var(--line);
   padding:32px 0;
