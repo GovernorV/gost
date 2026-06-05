@@ -250,19 +250,24 @@ html.day-theme .topbar{
 .brand .name{display:flex;flex-direction:column;line-height:1.1}
 .brand .name strong{font-size:14px}
 .brand .name span{font-size:12px;color:var(--muted)}
-.lang{display:flex;gap:8px;align-items:center}
-.lang button{
+.lang{
+  display:inline-flex;gap:4px;align-items:center;
+  padding:4px;
   border:1px solid var(--line);
-  background:rgba(255,255,255,.05);
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+}
+html.day-theme .lang{background:#fff}
+.lang button{
+  border:0;
+  background:transparent;
   color:var(--text);
-  border-radius:12px;
-  padding:8px 10px;
+  border-radius:999px;
+  padding:10px 18px;
   font-weight:800;
   cursor:pointer;
 }
-html.day-theme .lang button{background:#fff}
 .lang button.active{
-  border-color:transparent;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   color:#061226;
 }
@@ -332,8 +337,8 @@ footer{
         </div>
       </a>
       <div class="lang" aria-label="Language switcher">
-        <button id="btn-ru" type="button">RU</button>
-        <button id="btn-en" type="button">EN</button>
+        <button id="btn-ru" type="button">Русский</button>
+        <button id="btn-en" type="button">English</button>
       </div>
     </div>
   </div>
@@ -527,11 +532,11 @@ footer{
           </div>
         </article>
                 <article class="card other-card">
-          <a href="https://governorv.github.io/palletizer-site/" target="_blank" rel="noopener"><img src="platepalletizer_banner.png" alt="Паллетировщик плит"></a>
+          <a href="https://governorv.github.io/palletizer-site/#ru" target="_blank" rel="noopener"><img src="platepalletizer_banner.png" alt="Паллетировщик плит"></a>
           <div class="body">
             <h3>Паллетировщик плит</h3>
             <p>Оптимальное распределение листовых материалов по поддонам: импорт заявок из Excel, расчет поддонов, контроль размеров, веса, высоты и цвета.</p>
-            <a class="btn secondary" href="https://governorv.github.io/palletizer-site/" target="_blank" rel="noopener">Страница</a>
+            <a class="btn secondary" href="https://governorv.github.io/palletizer-site/#ru" target="_blank" rel="noopener">Страница</a>
           </div>
         </article><article class="card other-card">
           <a href="https://governorv.github.io/DBSearch/#ru" target="_blank" rel="noopener"><img src="dbsearch_banner.png" alt="DBSearch"></a>
@@ -698,11 +703,11 @@ footer{
           </div>
         </article>
                 <article class="card other-card">
-          <a href="https://governorv.github.io/palletizer-site/" target="_blank" rel="noopener"><img src="platepalletizer_banner_en.png" alt="Plate Palletizer"></a>
+          <a href="https://governorv.github.io/palletizer-site/#en" target="_blank" rel="noopener"><img src="platepalletizer_banner_en.png" alt="Plate Palletizer"></a>
           <div class="body">
             <h3>Plate Palletizer</h3>
             <p>Optimal pallet distribution for sheet materials: Excel order import, pallet calculation, size, weight, height and color control.</p>
-            <a class="btn secondary" href="https://governorv.github.io/palletizer-site/" target="_blank" rel="noopener">Page</a>
+            <a class="btn secondary" href="https://governorv.github.io/palletizer-site/#en" target="_blank" rel="noopener">Page</a>
           </div>
         </article><article class="card other-card">
           <a href="https://governorv.github.io/DBSearch/#en" target="_blank" rel="noopener"><img src="dbsearch_banner_en.png" alt="DBSearch"></a>
