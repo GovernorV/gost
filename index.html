@@ -373,6 +373,7 @@ html[data-theme=night] .pt-bundles .pt-bundle-cover{background:#071221}
 @media(max-width:1000px){.pt-bundles .pt-bundle-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.pt-bundles .pt-bundle-list{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="faq.css">
 </head>
 <body>
 <header class="topbar">
@@ -890,6 +891,7 @@ html[data-theme=night] .pt-bundles .pt-bundle-cover{background:#071221}
   </div>
 </footer>
 
+<script src="faq.js"></script>
 <script>
 (function () {
   const RU = "ru";
@@ -952,6 +954,7 @@ html[data-theme=night] .pt-bundles .pt-bundle-cover{background:#071221}
     btnRu.classList.toggle("active", lang === RU);
     btnEn.classList.toggle("active", lang === EN);
     setMetaForLang(lang);
+    window.PackTuningFaq.setLanguage(lang);
     try { localStorage.setItem("lang", lang); } catch(e) {}
     const url = new URL(window.location.href);
     if (lang === EN) url.searchParams.set("lang", EN);

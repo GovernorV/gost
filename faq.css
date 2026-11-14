@@ -1,0 +1,9 @@
+/* FAQ uses the page's existing card, color and spacing tokens. */
+#faq{scroll-margin-top:160px}
+#faq .faq-list{display:grid;gap:18px}
+#faq .faq-item{padding:0;min-width:0;overflow:hidden}
+#faq summary{padding:28px;cursor:pointer;overflow-wrap:anywhere}
+#faq summary h3{display:inline;margin:0}
+#faq summary:focus-visible{outline:3px solid var(--accent);outline-offset:-4px}
+#faq .faq-answer{padding:0 28px 16px;overflow-wrap:anywhere}
+@media(max-width:700px){#faq summary{padding:20px}#faq .faq-answer{padding:0 20px 8px}}
